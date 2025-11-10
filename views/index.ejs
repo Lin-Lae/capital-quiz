@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's the Capital of?</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <div class="container">
+        <p class="nickname">Alright, ready to guess the capital? 🌍</p>
+
+        <h2>What's the capital of 
+            <%= question && question.country ? question.country : "loading..." %>?
+        </h2>
+
+        <% if (typeof wasCorrect === 'undefined') { %>
+            <!-- Show this part BEFORE submission -->
+            <form action="/submit" method="POST">
+                <input type="hidden" name="country" value="<%= question.country %>">
+                <input type="text" name="capital" placeholder="Type the capital here" required>
+                <button type="submit">Submit</button>
+            </form>
+            <p class="hint">Don't worry, you can Google it 😜</p>
+        <% } else { %>
+            <!-- Show this part AFTER submission -->
+            <% if (wasCorrect) { %>
+                <p>Correct! it's <%= question.capital %>, <%= nickname %>! 🎉</p>
+            <% } else { %>
+                <p>Oops, the answer is <%= question.capital %>. 😁</p>
+            <% } %>
+
+            <form action="/next" method="GET">
+                <button type="submit">Next</button>
+            </form>
+        <% } %>
+    </div>
+</body>
+</html>
