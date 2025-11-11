@@ -53,9 +53,9 @@ app.get("/", async (req, res) => {
 
 // POST answer
 app.post("/submit", async (req, res) => {
-  let answer = req.body.capital.trim();
+  let answer = req.body.capital;
   let isCorrect = false;
-  if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
+  if (normalize(currentQuestion.capital) === normalize(answer)) {
     isCorrect = true;
   }
 
@@ -78,6 +78,16 @@ async function nextQuestion() {
   currentQuestion = randomCountry;
 };
 
+function normalize(str) {
+  return str
+    .normalize("NFD")               // separate letters from accents
+    .replace(/[\u0300-\u036f]/g, "") // remove accents
+    .replace(/’/g, "'")             // replace curly apostrophes
+    .replace(/[^\w\s]/g, "")        // remove other punctuation
+    .trim()
+    .toLowerCase();
+};
+
 const quizNicknames = [
   "Smarty Pants", "Brainiac", "Captain Clever", "Quiz Whiz", "Brainy Bunny",
   "Clever Cookie", "Knowledge Ninja", "Smarty McSmartyface", "Quiz Genius",
@@ -88,6 +98,6 @@ const quizNicknames = [
   "Brainy Wren", "The Thinker", "Quiz Wizard", "Fact Finder", "Mind Magician"
 ];
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
