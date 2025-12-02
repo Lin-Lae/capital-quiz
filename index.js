@@ -1,13 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
+import dotenv from "dotenv";
+dotenv.config();
 
 const db = new pg.Client({
-  user: "capital_quiz_db_user",
-  host: "dpg-d48e1lodl3ps73bb8en0-a.singapore-postgres.render.com",
-  database: "capital_quiz_db",
-  password: "3wzJxOQO3aP65WLqmbCvEUJfVV8dgQhd",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false // important for Render
   }
